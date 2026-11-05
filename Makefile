@@ -2,8 +2,8 @@ Q ?= @
 CC = arm-none-eabi-gcc
 CXX = arm-none-eabi-g++
 BUILD_DIR = target
-# Syntaxe officielle du template NumWorks : nwlink fournit eadk.h et ses options.
-NWLINK = npx --yes -- nwlink@0.0.16
+# Installe le paquet nwlink et lance explicitement son exécutable.
+NWLINK = npx --yes --package=nwlink@0.0.16 -- nwlink
 
 CPPFLAGS = -std=c++11 -fno-exceptions -Os -Wall
 CPPFLAGS += $(shell $(NWLINK) eadk-cflags)
