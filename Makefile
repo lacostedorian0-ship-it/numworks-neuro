@@ -2,8 +2,8 @@ Q ?= @
 CC = arm-none-eabi-gcc
 CXX = arm-none-eabi-g++
 BUILD_DIR = target
-# Installe le paquet nwlink et lance explicitement son exécutable.
-NWLINK = npx --yes --package=nwlink@0.0.16 -- nwlink
+# Syntaxe identique au template officiel NumWorks epsilon-sample-app-cpp.
+NWLINK = npx --yes -- nwlink@0.0.16
 
 CPPFLAGS = -std=c++11 -fno-exceptions -Os -Wall
 CPPFLAGS += $(shell $(NWLINK) eadk-cflags)
