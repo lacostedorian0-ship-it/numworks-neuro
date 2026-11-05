@@ -2,7 +2,7 @@ Q ?= @
 CC = arm-none-eabi-gcc
 CXX = arm-none-eabi-g++
 BUILD_DIR = target
-# nwlink 1.0.0 fournit le SDK EADK (dont eadk.h) et l'outil d'icône.
+# nwlink 0.0.19 fournit les options EADK et l'outil d'icône.
 NWLINK = npx --yes -- nwlink@0.0.19
 
 CPPFLAGS = -std=c++11 -fno-exceptions -Os -Wall
