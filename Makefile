@@ -3,10 +3,10 @@ CC = arm-none-eabi-gcc
 CXX = arm-none-eabi-g++
 BUILD_DIR = target
 # nwlink 1.0.0 fournit le SDK EADK (dont eadk.h) et l'outil d'icône.
-NWLINK = npx --yes --package=nwlink@1.0.0 -- nwlink
+NWLINK = npx --yes -- nwlink@0.0.19
 
 CPPFLAGS = -std=c++11 -fno-exceptions -Os -Wall
-CPPFLAGS += $(shell $(NWLINK) eadk-cflags)
+CPPFLAGS += $(shell $(NWLINK) eadk-cflags-device)
 CPPFLAGS += -fdata-sections -ffunction-sections
 LDFLAGS = -Wl,--relocatable -nostartfiles --specs=nano.specs
 LDFLAGS += -Wl,-e,main -Wl,-u,eadk_app_name -Wl,-u,eadk_app_icon -Wl,-u,eadk_api_level -Wl,--gc-sections
