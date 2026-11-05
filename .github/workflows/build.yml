@@ -7,19 +7,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Installer la toolchain officielle NumWorks
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install official NumWorks toolchain
         uses: numworks/setup-arm-toolchain@latest
-      - name: Vérifier le SDK EADK
-        run: npx --yes --package=nwlink@1.0.0 -- nwlink eadk-cflags
-      - name: Compiler le fichier NWA
-        run: |
-          make clean
-          make build
-      - uses: actions/upload-artifact@v4
+      - name: Build NWA
+        run: make build
+      - name: Verify generated NWA
+        run: test -s target/GEO_DASH.nwa
+      - name: Upload NWA
+        uses: actions/upload-artifact@v4
         with:
           name: GEO-DASH-N0120-NWA
           path: target/GEO_DASH.nwa
