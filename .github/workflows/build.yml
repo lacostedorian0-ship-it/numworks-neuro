@@ -14,10 +14,30 @@ jobs:
       - name: Build NWA
         run: make build
       - name: Verify generated NWA
-        run: test -s target/GEO_DASH.nwa
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import struct
+
+          path = pathlib.Path("target/GEO_DASH.nwa")
+          data = path.read_bytes()
+          assert len(data) > 52, "NWA is empty or too small"
+          assert data[:4] == b"\\x7fELF", "Output is not an ELF file"
+          assert data[4] == 1, "Expected ELF32"
+          assert data[5] == 1, "Expected little-endian ELF"
+          elf_type, machine = struct.unpack_from("<HH", data, 16)
+          assert elf_type == 1, f"Expected relocatable ELF, got type {elf_type}"
+          assert machine == 40, f"Expected ARM architecture, got machine {machine}"
+          print(f"Verified ARM ELF32 NWA: {path} ({len(data)} bytes)")
+          PY
+      - name: Prepare artifact preserving target path
+        run: |
+          mkdir -p artifact/target
+          cp target/GEO_DASH.nwa artifact/target/GEO_DASH.nwa
+          cmp target/GEO_DASH.nwa artifact/target/GEO_DASH.nwa
       - name: Upload NWA
         uses: actions/upload-artifact@v4
         with:
           name: GEO-DASH-N0120-NWA
-          path: target/GEO_DASH.nwa
+          path: artifact/
           if-no-files-found: error
